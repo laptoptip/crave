@@ -1,7 +1,5 @@
 
-Crave development tree
-
-Crave is a PoS-based cryptocurrency.
+#Crave development tree
 
 CRAVE is dependent upon libsecp256k1 by sipa, the sources for which can be found here:
 https://github.com/bitcoin/secp256k1
@@ -14,7 +12,7 @@ Diff Retarget: 24 Blocks
 Maturity: 188 Blocks
 Stake Minimum Age: 8 Hours
 
-40 MegaByte Maximum Block Size (40X Bitcoin Core)
+#40 MegaByte Maximum Block Size (40X Bitcoin Core)
 
 Port: 30104
 RPC Port: 30105
