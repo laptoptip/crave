@@ -85,6 +85,8 @@ static const int64_t MAX_MONEY = 2000000000 * COIN; // 1M PoW coins
 inline bool MoneyRange(int64_t nValue) { return (nValue >= 0 && nValue <= MAX_MONEY); }
 /** Threshold for nLockTime: below this value it is interpreted as block number, otherwise as UNIX timestamp. */
 static const unsigned int LOCKTIME_THRESHOLD = 500000000; // Tue Nov  5 00:53:20 1985 UTC
+/** Time To Change the Algorithm for Proof Of Work  */
+static const int64_t UNIX_SHA256 =  1441584000; // 7th September 2015 00:00:00 GMT
 
 inline bool IsProtocolV1RetargetingFixed(int nHeight) { return TestNet() || nHeight > 0; }
 inline bool IsProtocolV2(int nHeight) { return TestNet() || nHeight > 0; }
@@ -705,7 +707,11 @@ public:
 
     uint256 GetPoWHash() const
     {
-        return scrypt_blockhash(CVOIDBEGIN(nVersion));
+        if (nTime < UNIX_SHA256)
+        {
+            return scrypt_blockhash(CVOIDBEGIN(nVersion));
+        }
+        else {return Hash(BEGIN(nVersion), END(nNonce));}
     }
 
     int64_t GetBlockTime() const
