@@ -110,15 +110,15 @@ OverviewPage::OverviewPage(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->frameDarksend->setVisible(false);  // Hide darksend features
+    ui->frameDarksend->setVisible(true);
 
     QScroller::grabGesture(ui->scrollArea, QScroller::LeftMouseButtonGesture);
     ui->scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    ui->columnTwoWidget->setContentsMargins(0,0,0,0);
+ /* ui->columnTwoWidget->setContentsMargins(0,0,0,0);
     ui->columnTwoWidget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-    ui->columnTwoWidget->setMinimumWidth(300);
+    ui->columnTwoWidget->setMinimumWidth(300); */
 
     // Recent transactions
     ui->listTransactions->setItemDelegate(txdelegate);

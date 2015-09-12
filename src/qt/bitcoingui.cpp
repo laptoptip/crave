@@ -36,6 +36,7 @@
 #include "urgemarket.h"
 #include "buyspage.h"
 #include "sellspage.h"
+#include "blockbrowser.h"
 
 #ifdef USE_NATIVE_I2P
 #include "showi2paddresses.h"
@@ -92,7 +93,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     prevBlocks(0),
     nWeight(0)
 {
-    resize(320, 600);
+    resize(860, 580);
     setWindowTitle(tr("Crave") + " - " + tr("Wallet"));
 #ifndef Q_OS_MAC
     qApp->setWindowIcon(QIcon(":icons/bitcoin"));
@@ -325,6 +326,12 @@ void BitcoinGUI::createActions()
 	sellsPageAction->setCheckable(true);
 	tabGroup->addAction(sellsPageAction);
 
+    blockAction = new QAction(QIcon(":/icons/overview"), tr("&Block Explorer"), this);
+    blockAction->setToolTip(tr("Explore the Blockchain"));
+    blockAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_6));
+    blockAction->setCheckable(true);
+    tabGroup->addAction(blockAction);
+
     connect(overviewAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(overviewAction, SIGNAL(triggered()), this, SLOT(gotoOverviewPage()));
     connect(receiveCoinsAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
@@ -343,7 +350,8 @@ void BitcoinGUI::createActions()
 	connect(buysPageAction, SIGNAL(triggered()), this, SLOT(gotoBuysPage()));
 	connect(sellsPageAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
 	connect(sellsPageAction, SIGNAL(triggered()), this, SLOT(gotoSellsPage()));
-
+    connect(blockAction, SIGNAL(triggered()), this, SLOT(gotoBlockBrowser()));
+    
     quitAction = new QAction(tr("E&xit"), this);
     quitAction->setToolTip(tr("Quit application"));
     quitAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
@@ -456,6 +464,7 @@ void BitcoinGUI::createToolBars()
 	toolbarMenu->addAction(urgeMarketAction);
 	toolbarMenu->addAction(buysPageAction);
 	toolbarMenu->addAction(sellsPageAction);
+	toolbarMenu->addAction(blockAction);
 
     QToolButton* menuToolButton = new QToolButton();
     menuToolButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
@@ -984,6 +993,22 @@ void BitcoinGUI::gotoSellsPage()
 
 	exportAction->setEnabled(false);
 	disconnect(exportAction, SIGNAL(triggered()), 0, 0);
+}
+
+void BitcoinGUI::gotoBlockBrowser()
+{
+   //blockAction->setChecked(true);
+   //centralWidget->setCurrentWidget(blockBrowser);
+
+   //exportAction->setEnabled(false);
+   //disconnect(exportAction, SIGNAL(triggered()), 0, 0);
+   
+   blockBrowser = new BlockBrowser(this);
+   centralStackedWidget->addWidget(blockBrowser);
+   centralStackedWidget->setCurrentWidget(blockBrowser);
+   
+   exportAction->setEnabled(false);
+   disconnect(exportAction, SIGNAL(triggered()), 0, 0);
 }
 
 void BitcoinGUI::gotoMasternodeManagerPage()

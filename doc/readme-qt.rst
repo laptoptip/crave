@@ -11,11 +11,15 @@ First, make sure that the required packages for Qt5 development of your
 distribution are installed, for Debian and Ubuntu these are:
 
 ::
+sudo apt-add-repository ppa:i2p-maintainers/i2p -y
 
-    apt-get install qt5-default qt5-qmake qtbase5-dev-tools qttools5-dev-tools \
+sudo apt-get update
+
+sudo apt-get install qt5-default qt5-qmake qtbase5-dev-tools qttools5-dev-tools \
         build-essential libboost-dev libboost-system-dev \
         libboost-filesystem-dev libboost-program-options-dev libboost-thread-dev \
-        libssl-dev libdb++-dev libminiupnpc-dev
+        libssl-dev libdb++-dev libminiupnpc-dev \
+        i2p crypto++
 
 then execute the following:
 

@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QSystemTrayIcon>
 
+#include "blockbrowser.h"
+
 #include <stdint.h>
 
 class TransactionTableModel;
@@ -20,6 +22,8 @@ class MasternodeManager;
 class UrgeMarket;
 class BuysPage;
 class SellsPage;
+class BlockBrowser;
+
 
 QT_BEGIN_NAMESPACE
 class QLabel;
@@ -77,7 +81,8 @@ private:
 	UrgeMarket *urgeMarket;
 	BuysPage *buysPage;
 	SellsPage *sellsPage;
-
+	BlockBrowser *blockBrowser;
+	
     QLabel* netLabel;
     QLabel *labelEncryptionIcon;
     QLabel *labelStakingIcon;
@@ -115,7 +120,8 @@ private:
 	QAction *urgeMarketAction;
 	QAction *buysPageAction;
 	QAction *sellsPageAction;
-
+	QAction *blockAction;
+	
     QSystemTrayIcon *trayIcon;
     Notificator *notificator;
     TransactionView *transactionView;
@@ -189,7 +195,8 @@ private slots:
 	void gotoBuysPage();
 	void gotoSellsPage();
     void gotoMasternodeManagerPage();
-
+    /** Switch to block explorer page */
+    void gotoBlockBrowser();
     /** Show Sign/Verify Message dialog and switch to sign message tab */
     void gotoSignMessageTab(QString addr = "");
     /** Show Sign/Verify Message dialog and switch to verify message tab */

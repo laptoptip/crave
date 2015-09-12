@@ -21,7 +21,7 @@ class CValidationState;
 #define START_MASTERNODE_PAYMENTS 1428537599 //Wed, 8 April 2015 23:59:59 GMT
 
 static const int64_t DARKSEND_COLLATERAL = (500*COIN);
-static const int64_t DARKSEND_FEE = (0.00925*COIN);
+static const int64_t DARKSEND_FEE = (0.005*COIN);
 static const int64_t DARKSEND_POOL_MAX = (4999.99*COIN);
 
 /*
@@ -77,7 +77,7 @@ static const unsigned int DEFAULT_MAX_ORPHAN_BLOCKS = 7500;
 /** The maximum number of entries in an 'inv' protocol message */
 static const unsigned int MAX_INV_SZ = 50000;
 /** Fees smaller than this (in satoshi) are considered zero fee (for transaction creation) */
-static const int64_t MIN_TX_FEE = 1000;
+static const int64_t MIN_TX_FEE = 10000;
 /** Fees smaller than this (in satoshi) are considered zero fee (for relaying) */
 static const int64_t MIN_RELAY_TX_FEE = MIN_TX_FEE;
 /** No amount larger than this (in satoshi) is valid */
@@ -87,7 +87,7 @@ inline bool MoneyRange(int64_t nValue) { return (nValue >= 0 && nValue <= MAX_MO
 static const unsigned int LOCKTIME_THRESHOLD = 500000000; // Tue Nov  5 00:53:20 1985 UTC
 /** Time To Change the Algorithm for Proof Of Work  */
 static const int64_t UNIX_SHA256 =  1441584000; // 7th September 2015 00:00:00 GMT
-
+static const int64_t FORK_OXYTOCIN = 999999999;
 inline bool IsProtocolV1RetargetingFixed(int nHeight) { return TestNet() || nHeight > 0; }
 inline bool IsProtocolV2(int nHeight) { return TestNet() || nHeight > 0; }
 

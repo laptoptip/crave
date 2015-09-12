@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET = crave-qt
-VERSION = 1.4.2.0
+VERSION = 2.0.0.0
 INCLUDEPATH += src src/json src/qt
 QT += network
 DEFINES += ENABLE_WALLET
