@@ -99,7 +99,7 @@ QMAKE_CXXFLAGS *= -DUSE_SECP256K1
 
 INCLUDEPATH += src/leveldb/include src/leveldb/helpers
 LIBS += $$PWD/src/leveldb/libleveldb.a $$PWD/src/leveldb/libmemenv.a
-SOURCES += src/txdb-leveldb.cpp
+SOURCES += src/txdb-leveldb.cpp 
 !win32 {
     # we use QMAKE_CXXFLAGS_RELEASE even without RELEASE=1 because we use RELEASE to indicate linking preferences not -O preferences
     genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a
@@ -271,7 +271,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/qt/createmarketlistingdialog.h \
     src/qt/marketlistingdetailsdialog.h \
     src/qt/deliverydetailsdialog.h \
-    src/market.h
+    src/market.h \
+    src/qt/blockbrowser.h
 
 SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/qt/transactiontablemodel.cpp \
@@ -378,8 +379,8 @@ SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/qt/createmarketlistingdialog.cpp \
     src/qt/marketlistingdetailsdialog.cpp \
     src/qt/deliverydetailsdialog.cpp \
-    src/market.cpp
-
+    src/market.cpp \
+    src/qt/blockbrowser.cpp
 
 RESOURCES += \
     src/qt/bitcoin.qrc
@@ -406,7 +407,8 @@ FORMS += \
     src/qt/forms/sellspage.ui \
     src/qt/forms/createmarketlistingdialog.ui \
     src/qt/forms/marketlistingdetailsdialog.ui \
-    src/qt/forms/deliverydetailsdialog.ui
+    src/qt/forms/deliverydetailsdialog.ui \
+    src/qt/forms/blockbrowser.ui
 
 contains(DEFINES, USE_NATIVE_I2P) {
 HEADERS += src/i2p.h \
@@ -529,5 +531,4 @@ contains(RELEASE, 1) {
     DEFINES += LINUX
     LIBS += -lrt -ldl
 }
-
 system($$QMAKE_LRELEASE -silent $$_PRO_FILE_)
