@@ -87,7 +87,7 @@ inline bool MoneyRange(int64_t nValue) { return (nValue >= 0 && nValue <= MAX_MO
 static const unsigned int LOCKTIME_THRESHOLD = 500000000; // Tue Nov  5 00:53:20 1985 UTC
 /** Time To Change the Algorithm for Proof Of Work  */
 static const int64_t UNIX_SHA256 =  1441584000; // 7th September 2015 00:00:00 GMT
-static const int64_t FORK_OXYTOCIN = 188000;
+static const int64_t FORK_OXYTOCIN = 200000;
 inline bool IsProtocolV1RetargetingFixed(int nHeight) { return TestNet() || nHeight > 0; }
 inline bool IsProtocolV2(int nHeight) { return TestNet() || nHeight > 0; }
 
