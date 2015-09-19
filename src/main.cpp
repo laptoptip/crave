@@ -1206,60 +1206,9 @@ const CBlockIndex* GetLastBlockIndex(const CBlockIndex* pindex, bool fProofOfSta
 
 int nTargetSpacing = 60;
 
-unsigned int static DarkGravityWave3(const CBlockIndex* pindexLast, bool fProofOfStake) {
-	/* current difficulty formula, DarkGravity v3, written by Evan Duffield - evan@darkcoin.io */
-	const CBlockIndex *BlockLastSolved = GetLastBlockIndex(pindexLast, fProofOfStake);;
-	const CBlockIndex *BlockReading = GetLastBlockIndex(pindexLast, fProofOfStake);;
-	int64_t nActualTimespan = 0;
-	int64_t LastBlockTime = 0;
-	int64_t PastBlocksMin = 24;
-	int64_t PastBlocksMax = 24;
-	int64_t CountBlocks = 0;
-	CBigNum PastDifficultyAverage;
-	CBigNum PastDifficultyAveragePrev;
-	
-	if (BlockLastSolved == NULL || BlockLastSolved->nHeight == 0 || BlockLastSolved->nHeight < PastBlocksMin) {
-		return Params().ProofOfWorkLimit().GetCompact();
-	}
-	for (unsigned int i = 1; BlockReading && BlockReading->nHeight > 0; i++) {
-		if (PastBlocksMax > 0 && i > PastBlocksMax) { break; }
-			CountBlocks++;
-		if(CountBlocks <= PastBlocksMin) {
-		if (CountBlocks == 1) { PastDifficultyAverage.SetCompact(BlockReading->nBits); }
-			else { PastDifficultyAverage = ((PastDifficultyAveragePrev * CountBlocks)+(CBigNum().SetCompact(BlockReading->nBits))) / (CountBlocks+1); }
-					PastDifficultyAveragePrev = PastDifficultyAverage;
-	}
-	
-	if(LastBlockTime > 0){
-		int64_t Diff = (LastBlockTime - BlockReading->GetBlockTime());
-			nActualTimespan += Diff;
-	}
-
-	LastBlockTime = BlockReading->GetBlockTime();
-	
-	if (BlockReading->pprev == NULL) { assert(BlockReading); break; }
-	BlockReading = BlockReading->pprev;
-	}
-	
-	CBigNum bnNew(PastDifficultyAverage);
-	int64_t nTargetTimespan = CountBlocks*nTargetTimespan;
-	
-	if (nActualTimespan < nTargetTimespan/3)
-		nActualTimespan = nTargetTimespan/3;
-	if (nActualTimespan > nTargetTimespan*3)
-		nActualTimespan = nTargetTimespan*3;
-	// Retarget
-			bnNew *= nActualTimespan;
-			bnNew /= nTargetTimespan;
-	
-			if (bnNew > Params().ProofOfWorkLimit()){
-				bnNew = Params().ProofOfWorkLimit();
-		}
-	return bnNew.GetCompact();
-}
 
 unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfStake)
-{
+{   
     if(pindexLast->GetBlockTime() > STAKE_TIMESPAN_SWITCH_TIME)
 	nTargetTimespan = 2 * 60; // 2 minutes
 
@@ -1274,30 +1223,25 @@ unsigned int GetNextTargetRequired(const CBlockIndex* pindexLast, bool fProofOfS
     const CBlockIndex* pindexPrevPrev = GetLastBlockIndex(pindexPrev->pprev, fProofOfStake);
     if (pindexPrevPrev->pprev == NULL)
         return bnTargetLimit.GetCompact(); // second block
-	
-	if (pindexPrev->nHeight > FORK_OXYTOCIN)
-		return DarkGravityWave3(pindexLast, fProofOfStake);
-	else
-	{
-		int64_t nActualSpacing = pindexPrev->GetBlockTime() - pindexPrevPrev->GetBlockTime();
-		
-		if (nActualSpacing < 0)
-			nActualSpacing = nTargetSpacing;
 
-		// ppcoin: target change every block
-		// ppcoin: retarget with exponential moving toward target spacing
-		CBigNum bnNew;
-		bnNew.SetCompact(pindexPrev->nBits);
-		int64_t nInterval = nTargetTimespan / nTargetSpacing;
-		bnNew *= ((nInterval - 1) * nTargetSpacing + nActualSpacing + nActualSpacing);
-		bnNew /= ((nInterval + 1) * nTargetSpacing);
+    int64_t nActualSpacing = pindexPrev->GetBlockTime() - pindexPrevPrev->GetBlockTime();
+    if (nActualSpacing < 0)
+        nActualSpacing = nTargetSpacing;
 
-		if (bnNew <= 0 || bnNew > bnTargetLimit)
-			bnNew = bnTargetLimit;
+    // ppcoin: target change every block
+    // ppcoin: retarget with exponential moving toward target spacing
+    CBigNum bnNew;
+    bnNew.SetCompact(pindexPrev->nBits);
+    int64_t nInterval = nTargetTimespan / nTargetSpacing;
+    bnNew *= ((nInterval - 1) * nTargetSpacing + nActualSpacing + nActualSpacing);
+    bnNew /= ((nInterval + 1) * nTargetSpacing);
 
-		return bnNew.GetCompact();
-	}
+    if (bnNew <= 0 || bnNew > bnTargetLimit)
+        bnNew = bnTargetLimit;
+
+    return bnNew.GetCompact();
 }
+
 
 bool CheckProofOfWork(uint256 hash, unsigned int nBits)
 {
