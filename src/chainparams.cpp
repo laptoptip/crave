@@ -52,7 +52,7 @@ public:
         pchMessageStart[1] = 0x22;
         pchMessageStart[2] = 0x05;
         pchMessageStart[3] = 0x31;
-        vAlertPubKey = ParseHex("04a983220ea7a38a7106385003fef77896538a382a0dcc389cc45f3c98751d9af423a097789757556259351198a8aaa628a1fd644c3232678c5845384c744ff8d7");
+        vAlertPubKey = ParseHex("04139c16f4a921313556e24be2762011da1f07d65a76ab01082dc26fe427db1da6e6034d02ccb3e5dc028eaecdd315183389f44efd9aac07c39461f0d35a5694f4");
         nDefaultPort = 30104;
         nRPCPort = 30105;
         bnProofOfWorkLimit = CBigNum(~uint256(0) >> 16);
@@ -85,10 +85,6 @@ public:
         assert(hashGenesisBlock == uint256("0x00000a336bf3e2be21c2ce9a3f9bc9849c697475d0de85e201bdc3452f3c343b"));
         assert(genesis.hashMerkleRoot == uint256("0x281554338b643722b01ea689ab64db68d3e7897f50fdb3ac9ba0b30aeb1f1837"));
 
-        
-
-       
-        
         base58Prefixes[PUBKEY_ADDRESS] = list_of(27);
         base58Prefixes[SCRIPT_ADDRESS] = list_of(85);
         base58Prefixes[SECRET_KEY] =     list_of(153);
@@ -97,7 +93,7 @@ public:
 
         convertSeed6(vFixedSeeds, pnSeed6_main, ARRAYLEN(pnSeed6_main));
 
-        nLastPOWBlock = 0x7fffffff;
+        nLastPOWBlock = 10000;
     }
 
     virtual const CBlock& GenesisBlock() const { return genesis; }
